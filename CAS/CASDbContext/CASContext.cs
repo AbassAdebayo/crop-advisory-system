@@ -17,7 +17,7 @@ namespace CAS.CASDbContext
             SeedRoleData(modelBuilder);
 
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
+                .HasIndex(u => u.Email.ToLowerInvariant())
                 .IsUnique();
 
             modelBuilder.Entity<Crop>(entity =>
