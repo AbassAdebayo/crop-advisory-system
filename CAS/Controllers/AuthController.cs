@@ -65,8 +65,11 @@ namespace CAS.Controllers
                 ViewBag.Message = "Invalid email or password";
                 return View(request);
             }
+            Console.WriteLine("DB PASSWORD HASH: " + user.PasswordHash);
 
             var verifyPassword =  _identityService.VerifyPassword(user.PasswordHash, request.Password);
+
+            Console.WriteLine("VERIFY PASSWORD: " + verifyPassword);
 
             if (!verifyPassword)
             {
@@ -96,7 +99,7 @@ namespace CAS.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authenticationProperties = new AuthenticationProperties();
             var principal = new ClaimsPrincipal(claimsIdentity);
-            await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal, authenticationProperties);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authenticationProperties);
             if (role == "Farmer")
             {
                 return RedirectToAction("FarmerDashboard", "User");

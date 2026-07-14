@@ -1,0 +1,158 @@
+﻿@{
+    Layout = null;
+}
+
+@model CAS.DTOs.Auth.LoginRequestModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/assets/images/favicon.svg" type="image/x-icon" />
+    <title>Sign In</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/lineicons.css" />
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="~/assets/css/fullcalendar.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+</head>
+<body>
+    <!-- ======== Preloader =========== -->
+    @* <div id="preloader">
+        <div class="spinner"></div>
+    </div> *@
+
+    <!-- ========== signin-section start ========== -->
+    <section class="signin-section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        @if (ViewBag.Message != null)
+                        {
+                            <div id="auto-close-alert" class="alert alert-danger alert-dismissible fade show" role="alert"
+                                 style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                                @ViewBag.Message
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                            <script>
+                                setTimeout(function() {
+                                    var alert = document.getElementById('auto-close-alert');
+                                    if (alert) {
+                                        var bsAlert = new bootstrap.Alert(alert);
+                                        bsAlert.close();
+                                    }
+                                }, 3000);
+                            </script>
+                        }
+
+                        <div class="title">
+                            <h2>Sign in</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ========== title-wrapper end ========== -->
+
+            <div class="row g-0 auth-row">
+                <div class="col-lg-6">
+                    <div class="auth-cover-wrapper bg-primary-100">
+                        <div class="auth-cover">
+                            <div class="title text-center">
+                                <h1 class="text-primary mb-10">Welcome Back</h1>
+                                <p class="text-medium">
+                                    Sign in to your Existing account to continue
+                                </p>
+                            </div>
+                            <div class="cover-image">
+                                <img src="~/assets/images/auth/signin-image.svg" alt="Sign In Cover" />
+                            </div>
+                            <div class="shape-image">
+                                <img src="~/assets/images/auth/shape.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="signin-wrapper">
+                        <div class="form-wrapper">
+                            <h6 class="mb-15">Sign In Form</h6>
+                            <p class="text-sm mb-25">
+                                Start creating the best possible user experience for your customers.
+                            </p>
+
+                            <!-- Fixed Form Action attributes -->
+                            <form asp-action="Login" asp-controller="Auth" method="post">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <!-- Fixed labels and added autocompletes -->
+                                            <label for="Email">Email</label>
+                                            <input asp-for="Email" type="email" placeholder="Email" autocomplete="username" />
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <label for="Password">Password</label>
+                                            <input asp-for="Password" type="password" placeholder="Password" autocomplete="current-password" />
+                                            <span asp-validation-for="Password" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xxl-6 col-lg-12 col-md-6">
+                                        <div class="form-check checkbox-style mb-30">
+                                            <input class="form-check-input" type="checkbox" value="" id="checkbox-remember" />
+                                            <label class="form-check-label" for="checkbox-remember">
+                                                Remember me next time
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xxl-6 col-lg-12 col-md-6">
+                                        <div class="text-start text-md-end text-lg-start text-xxl-end mb-30">
+                                            <a href="reset-password.html" class="hover-underline">
+                                                Forgot Password?
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="button-group d-flex justify-content-center flex-wrap">
+                                            <!-- Changed button attributes for standard HTML submission -->
+                                            <button type="submit" class="main-btn primary-btn btn-hover w-100 text-center">
+                                                Sign In
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <p class="text-sm text-medium text-dark text-center mt-20">
+                                Don’t have an account yet?
+                                <a asp-action="RegisterFarmer" asp-controller="Auth">Create an account</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/Chart.min.js"></script>
+    <script src="~/assets/js/dynamic-pie-chart.js"></script>
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/fullcalendar.js"></script>
+    <script src="~/assets/js/jvectormap.min.js"></script>
+</body>
+</html>

@@ -37,6 +37,7 @@ namespace CAS.Identity
         public bool VerifyPassword(string hashedPassword, string providedPassword)
         {
             var result = _passwordHasher.VerifyHashedPassword(new User(), hashedPassword, providedPassword);
+            Console.WriteLine($"Password verification result: {result}");
             return result == PasswordVerificationResult.Success;
         }
     }

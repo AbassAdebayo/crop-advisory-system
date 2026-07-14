@@ -17,7 +17,7 @@ namespace CAS.CASDbContext
             SeedRoleData(modelBuilder);
 
             modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email.ToLowerInvariant())
+                .HasIndex(u => u.Email)
                 .IsUnique();
 
             modelBuilder.Entity<Crop>(entity =>
@@ -70,7 +70,7 @@ namespace CAS.CASDbContext
                 FullName = "CAS Admin",
                 PhoneNumber = "09117690426",
                 Location = "Lagos",
-                PasswordHash = "AQAAAAEAACcQAAAAEP55WXadi3LFl/WUHm61QFIdM7BF33w0jUBWix6x/RFfzvK8F0VN4/KNkLFlDuMdEg==",
+                PasswordHash = "AQAAAAIAAYagAAAAEH57jLQ7uc7oKhUYtas/A3EDzs8yY13z1jMAlgZiR+WJAsOxqgsbo0y+3ztTRUCmjA==",
                 RoleId = adminRoleId,
                 CreatedAt = new DateTime(2026, 04, 25, 0, 0, 0, DateTimeKind.Utc),
             };

@@ -1,0 +1,190 @@
+﻿@{
+    Layout = null;
+}
+
+@model CAS.DTOs.Auth.RegisterFarmerRequestModel
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/assets/images/favicon.svg" type="image/x-icon" />
+    <title>Sign Up</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/lineicons.css" />
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="~/assets/css/fullcalendar.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+</head>
+
+<body>
+    <!-- ======== Preloader =========== -->
+    @* <div id="preloader">
+        <div class="spinner"></div>
+    </div> *@
+    <!-- ======== Preloader =========== -->
+    <!-- ======== sidebar-nav start =========== -->
+    <!-- ========== signin-section start ========== -->
+    <section class="signin-section">
+        <div class="container-fluid">
+            <!-- ========== title-wrapper start ========== -->
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        @if (ViewBag.Message != null)
+                        {
+                            <div id="auto-close-alert" class="alert alert-danger alert-dismissible fade show" role="alert"
+                                 style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;">
+                                @ViewBag.Message
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                            <script>
+                                                        setTimeout(function () {
+                                                            var alert = document.getElementById('auto-close-alert');
+                                                            if (alert) {
+                                                                // Use Bootstrap's dismissal logic
+                                                                var bsAlert = new bootstrap.Alert(alert);
+                                                                bsAlert.close();
+                                                            }
+                                                        }, 3000); // 3 seconds
+                            </script>
+                        }
+
+                        <div class="title">
+                            <h2>Sign up</h2>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+            </div>
+            <!-- ========== title-wrapper end ========== -->
+
+            <div class="row g-0 auth-row">
+                <div class="col-lg-6">
+                    <div class="auth-cover-wrapper bg-primary-100">
+                        <div class="auth-cover">
+                            <h1 class="text-primary mb-10">Get Started</h1>
+                            <p class="text-medium">
+                                Start creating the best possible user experience
+                                <br class="d-sm-block" />
+                                for you customers.
+                            </p>
+                            <div class="cover-image">
+                                <img src="~/assets/images/auth/signin-image.svg" alt="" />
+                            </div>
+                            <div class="shape-image">
+                                <img src="~/assets/images/auth/shape.svg" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+                <div class="col-lg-6">
+                    <div class="signin-wrapper">
+                        <div class="form-wrapper">
+                            <h6 class="mb-15">Sign Up Form</h6>
+                            <p class="text-sm mb-25">
+                                Start creating the best possible user experience for you
+                                customers.
+                            </p>
+                            <form asp-action="RegisterFarmer" asp-controller="Auth" method="post">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <!-- Added 'for' attribute matching the auto-generated input ID -->
+                                            <label for="FullName">FullName</label>
+                                            <!-- Fixed asp-for and added autocomplete -->
+                                            <input asp-for="FullName" type="text" placeholder="FullName"
+                                                   autocomplete="name" />
+                                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <label for="Email">Email</label>
+                                            <input asp-for="Email" type="email" placeholder="Email"
+                                                   autocomplete="email" />
+                                            <span asp-validation-for="Email" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <label for="PhoneNumber">PhoneNumber</label>
+                                            <input asp-for="PhoneNumber" type="tel" placeholder="PhoneNumber"
+                                                   autocomplete="tel" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <label for="Location">Location</label>
+                                            <input asp-for="Location" type="text" placeholder="Location"
+                                                   autocomplete="street-address" />
+                                            <span asp-validation-for="Location" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                    <div class="col-12">
+                                        <div class="input-style-1">
+                                            <label for="PasswordHash">Password</label>
+                                            <input asp-for="PasswordHash" type="password" placeholder="Password"
+                                                   autocomplete="new-password" />
+                                            <span asp-validation-for="PasswordHash" class="text-danger small"></span>
+                                        </div>
+                                        <div class="input-style-1">
+                                            <label for="ConfirmPassword">ConfirmPassword</label>
+                                            <input asp-for="ConfirmPassword" type="password"
+                                                   placeholder="ConfirmPassword" autocomplete="new-password" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                        </div>
+                                    </div>
+                                    <!-- end col -->
+                                    <div class="col-xxl-6 col-lg-12 col-md-6">
+                                        <div class="form-check checkbox-style mb-30">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                   id="checkbox-remember" />
+                                            <label class="form-check-label" for="checkbox-remember">
+                                                Remember me next time
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <p class="text-sm text-medium text-dark text-center">
+                                Already have an account?
+                                <a asp-action="Login">Sign in</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </section>
+
+    <!-- ========= All Javascript files linkup ======== -->
+    <script src="~/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/Chart.min.js"></script>
+    <script src="~/assets/js/dynamic-pie-chart.js"></script>
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/fullcalendar.js"></script>
+    <script src="~/assets/js/jvectormap.min.js"></script>
+    <script src="~/assets/js/world-merc.js"></script>
+    <script src="~/assets/js/polyfill.js"></script>
+    <script src="~/assets/js/main.js"></script>
+</body>
+
+</html>
