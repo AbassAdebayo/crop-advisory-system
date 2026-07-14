@@ -41,7 +41,7 @@ namespace CAS.Controllers
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Message = result.Message;
-            return View(result);
+            return View(request);
         }
 
         [HttpGet]
