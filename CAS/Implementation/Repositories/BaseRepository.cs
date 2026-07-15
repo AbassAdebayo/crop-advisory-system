@@ -1,8 +1,8 @@
 ﻿using CAS.CASDbContext;
 using CAS.Interfaces.Repositories;
-using CAS.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using CAS.Contracts;
 
 namespace CAS.Implementation.Repositories
 {

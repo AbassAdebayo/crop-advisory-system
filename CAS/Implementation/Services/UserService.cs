@@ -1,8 +1,8 @@
-﻿using CAS.DTOs;
+﻿using CAS.Contracts.Identity;
+using CAS.DTOs;
 using CAS.DTOs.Auth;
 using CAS.Interfaces.Repositories;
 using CAS.Interfaces.Services;
-using CAS.Models.Contracts.Identity;
 using CAS.Models.Entities;
 
 namespace CAS.Implementation.Services
@@ -33,9 +33,11 @@ namespace CAS.Implementation.Services
 
             var hashPassword = _identityService.GetPasswordHash(model.PasswordHash);
 
+            var normalizeEmail = _identityService.GetNormalizedEmail(model.Email);
+
             var farmerAccount = new User
             {
-                Email = model.Email,
+                Email = normalizeEmail,
                 FullName = model.FullName,
                 PhoneNumber = model.PhoneNumber,
                 Location = model.Location,

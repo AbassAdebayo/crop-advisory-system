@@ -1,5 +1,5 @@
-﻿using CAS.Models.Contracts;
-using CAS.Models.Contracts.Enums;
+﻿using CAS.Contracts;
+using CAS.Contracts.Enums;
 
 namespace CAS.Models.Entities
 {

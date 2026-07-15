@@ -1,4 +1,4 @@
-﻿using CAS.Models.Contracts;
+﻿using CAS.Contracts;
 
 namespace CAS.Models.Entities
 {

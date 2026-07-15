@@ -1,5 +1,4 @@
-﻿using CAS.Models.Contracts;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace CAS.Models.Entities
 {

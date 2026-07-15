@@ -1,5 +1,5 @@
-﻿using CAS.Interfaces.Repositories;
-using CAS.Models.Contracts.Identity;
+﻿using CAS.Contracts.Identity;
+using CAS.Interfaces.Repositories;
 using CAS.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -39,6 +39,15 @@ namespace CAS.Identity
             var result = _passwordHasher.VerifyHashedPassword(new User(), hashedPassword, providedPassword);
             Console.WriteLine($"Password verification result: {result}");
             return result == PasswordVerificationResult.Success;
+        }
+        
+        public string GetNormalizedEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
+            return email.ToLower();
         }
     }
 }

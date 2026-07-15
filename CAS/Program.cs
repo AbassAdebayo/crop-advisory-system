@@ -1,11 +1,11 @@
 using CAS.CASDbContext;
+using CAS.Contracts.Identity;
 using CAS.DTOs.Auth;
 using CAS.Identity;
 using CAS.Implementation.Repositories;
 using CAS.Implementation.Services;
 using CAS.Interfaces.Repositories;
 using CAS.Interfaces.Services;
-using CAS.Models.Contracts.Identity;
 using CAS.Models.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;

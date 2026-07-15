@@ -1,5 +1,5 @@
-﻿using CAS.Models.Contracts;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
+using CAS.Contracts;
 
 namespace CAS.Interfaces.Repositories
 {

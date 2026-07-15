@@ -1,4 +1,4 @@
-﻿namespace CAS.Models.Contracts
+﻿namespace CAS.Contracts
 {
     public class BaseEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace CAS.Models.Contracts.Enums
+﻿namespace CAS.Contracts.Enums
 {
     public enum Status
     {

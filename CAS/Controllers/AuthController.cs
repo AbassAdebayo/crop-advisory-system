@@ -2,7 +2,6 @@ using CAS.DTOs.Auth;
 using CAS.Interfaces.Repositories;
 using CAS.Interfaces.Services;
 using CAS.Models;
-using CAS.Models.Contracts.Identity;
 using CAS.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CAS.Contracts.Identity;
 
 namespace CAS.Controllers
 {
@@ -35,7 +35,7 @@ namespace CAS.Controllers
         {
             var result = await _userService.RegisterFarmerAsync(request);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
                 ViewBag.Message = result.Message;
                 return RedirectToAction("Index", "Home");
@@ -58,7 +58,8 @@ namespace CAS.Controllers
                 return View(request);
             }
 
-            var user = await _userRepository.Get<User>(u => u.Email == request.Email);
+            var normalizeEmail = _identityService.GetNormalizedEmail(request.Email);
+            var user = await _userRepository.Get<User>(u => u.Email == normalizeEmail);
 
             if (user is null)
             {
@@ -67,7 +68,7 @@ namespace CAS.Controllers
             }
             Console.WriteLine("DB PASSWORD HASH: " + user.PasswordHash);
 
-            var verifyPassword =  _identityService.VerifyPassword(user.PasswordHash, request.Password);
+            var verifyPassword = _identityService.VerifyPassword(user.PasswordHash, request.Password);
 
             Console.WriteLine("VERIFY PASSWORD: " + verifyPassword);
 
@@ -83,16 +84,17 @@ namespace CAS.Controllers
             {
                 FullName = user.FullName,
                 UserId = user.Id,
-                Role = role
+                Role = role,
+                Email = user.Email
             };
 
             var claims = new List<Claim>
              {
                     new Claim(ClaimTypes.Name, loginResponseData.FullName),
-                   // new Claim(ClaimTypes.Email, loginResponseData.Email),
+                   new Claim(ClaimTypes.Email, loginResponseData.Email),
                     new Claim(ClaimTypes.NameIdentifier, loginResponseData.UserId.ToString()),
                     new Claim(ClaimTypes.Role, loginResponseData.Role)
-                   
+
 
              };
 
@@ -104,10 +106,18 @@ namespace CAS.Controllers
             {
                 return RedirectToAction("FarmerDashboard", "User");
             }
-            
+
             return RedirectToAction("AdminDashboard", "User");
 
         }
-         
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login");
+        }
     }
 }

@@ -12,11 +12,9 @@
        public string Role { get; set; } = string.Empty;
 
        public string FullName = string.Empty;
+        public string Email = string.Empty;
 
    }
 
-    public class LoginResponseModel : BaseResponse
-    {
-        public LoginResponseData Data { get; set; } = null!;
-    }
+   
 }
