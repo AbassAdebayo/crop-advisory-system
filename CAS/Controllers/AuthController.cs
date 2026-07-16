@@ -38,7 +38,7 @@ namespace CAS.Controllers
             if (result.IsSuccess)
             {
                 ViewBag.Message = result.Message;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login");
             }
             ViewBag.Message = result.Message;
             return View(request);

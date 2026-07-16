@@ -1,4 +1,5 @@
-﻿using CAS.Models.Entities;
+﻿using CAS.Contracts.Enums;
+using CAS.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CAS.CASDbContext
@@ -24,6 +25,7 @@ namespace CAS.CASDbContext
             {
                 entity.HasIndex(c => c.Name).IsUnique();
                 entity.Property(c => c.CropStatus).HasConversion<string>();
+                entity.HasQueryFilter(c => c.CropStatus == Status.Active);
             });
 
 

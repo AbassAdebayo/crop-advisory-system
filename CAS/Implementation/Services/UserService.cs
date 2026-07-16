@@ -43,6 +43,7 @@ namespace CAS.Implementation.Services
                 Location = model.Location,
                 PasswordHash = hashPassword,
                 RoleId = farmerRole.Id,
+                CreatedAt = DateTime.UtcNow,
             };
 
             var addAccount = await _userRepository.Add<User>(farmerAccount);
