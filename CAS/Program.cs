@@ -1,4 +1,5 @@
 using CAS.CASDbContext;
+using CAS.Configuration;
 using CAS.Contracts.Identity;
 using CAS.DTOs.Auth;
 using CAS.Identity;
@@ -23,13 +24,21 @@ builder.Services.AddDbContext<CASContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("CASConnection")
     ));
 
+builder.Services.Configure<CloudinarySettings>(
+builder.Configuration.GetSection("Cloudinary"));
+
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<ICropService, CropService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>(); 
 builder.Services.AddScoped<IBaseRepository, BaseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICropRepository, CropRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterFarmerRequestValidator>();
 builder.Services.AddFluentValidationAutoValidation();
@@ -46,6 +55,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
       config.ExpireTimeSpan = TimeSpan.FromMinutes(15);
       config.SlidingExpiration = true;
   });
+
 
 var app = builder.Build();
 

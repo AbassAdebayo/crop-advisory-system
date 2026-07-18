@@ -6,6 +6,6 @@ namespace CAS.DTOs.Crop
     {
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public required string ImageUrl { get; set; }
+        public required IFormFile Image { get; set; }
     }
 }

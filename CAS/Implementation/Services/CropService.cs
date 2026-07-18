@@ -12,7 +12,7 @@ namespace CAS.Implementation.Services
         private readonly ICropRepository _cropRepository = cropRepository ?? throw new ArgumentNullException(nameof(cropRepository));
         private readonly ILogger<CropService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
-        public async Task<BaseResponse> CreateCropAsync(CreateCropRequestModel model)
+        public async Task<BaseResponse> CreateCropAsync(string imageUrl, CreateCropRequestModel model)
         {
             var cropExists = await _cropRepository.Any<Crop>(c => c.Name == model.Name);
             if (cropExists) return new BaseResponse
@@ -25,7 +25,7 @@ namespace CAS.Implementation.Services
             {
                 Name = model.Name,
                 Description = model.Description,
-                ImageUrl = model.ImageUrl,
+                ImageUrl = imageUrl,
                 CropStatus = Status.Active,
                 CreatedAt = DateTime.UtcNow,
             };

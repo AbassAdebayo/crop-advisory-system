@@ -10,7 +10,7 @@ namespace CAS.DTOs.Crop
                 .MinimumLength(2).WithMessage("Crop name cannot be lesser than two characters.")
                 .MaximumLength(30).WithMessage("Crop name cannot exceed 30 characters");
 
-            RuleFor(x => x.ImageUrl).NotEmpty().WithMessage("Crop image is required");
+            RuleFor(x => x.Image).NotEmpty().WithMessage("Crop image is required");
                 
         }
     }
