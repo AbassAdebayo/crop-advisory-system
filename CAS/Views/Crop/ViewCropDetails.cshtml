@@ -1,0 +1,97 @@
+﻿@using CAS.DTOs
+@model BaseResponse<CAS.DTOs.Crop.CropDto>
+
+@{
+	Layout = "_AdminLayout";
+}
+
+    <div class="row">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                  @TempData["SuccessMessage"]
+                   @* <button type="button" class="btn-close" data-bs-dismiss="alert"></button> *@
+               </div>
+            
+        }
+
+        <!-- Image -->
+        <div class="col-lg-5 mb-4">
+            <div class="card-style h-100">
+
+                @if (!string.IsNullOrWhiteSpace(Model.Data?.ImageUrl))
+                {
+                <img src="@Model.Data.ImageUrl" alt="@Model.Data.Name" class="img-fluid w-100"
+                    style="height:350px;object-fit:cover;border-radius:12px;" onerror="this.src='/images/no-image.png';" />
+                }
+                else
+                {
+                <img src="~/images/no-image.png" alt="No Image" class="img-fluid w-100"
+                    style="height:350px;object-fit:cover;border-radius:12px;" />
+                }
+
+            </div>
+        </div>
+
+        <!-- Details -->
+        <div class="col-lg-7">
+            <div class="card-style">
+
+                <table class="table table-borderless">
+
+                    <tr>
+                        <th width="180">Crop Name</th>
+                        <td>@Model.Data?.Name</td>
+                    </tr>
+
+                    <tr>
+                        <th>Description</th>
+                        <td>@Model.Data?.Description</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            @if (Model.Data?.CropStatus == CAS.Contracts.Enums.Status.Active)
+                            {
+                            <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                            <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Created At</th>
+                        <td>@Model.Data?.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</td>
+                    </tr>
+
+                </table>
+
+                <div class="mt-4">
+                    <a asp-action="Edit" asp-route-id="@Model.Data?.Id" class="main-btn warning-btn btn-hover">
+                        <i class="lni lni-pencil"></i> Edit
+                    </a>
+
+                    <a asp-action="CropList" class="main-btn light-btn btn-hover">
+                        Back
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>

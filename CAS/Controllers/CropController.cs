@@ -34,13 +34,13 @@ namespace CAS.Controllers
 
             if (!response.IsSuccess)
             {
-                ViewBag.Message = response.Message;
-                return View("Error", response.Message);
+                ViewBag.ErrorMessage = response.Message;
+                return View(response.Message);
 
             }
             else
             {
-                ViewBag.Message = response.Message;
+                TempData["SuccessMessage"] = response.Message;
                 return RedirectToAction("ListOfCrops");
             }
 
@@ -52,12 +52,13 @@ namespace CAS.Controllers
             var response = await _cropService.GetAllCropsAsync();
             if(response.IsSuccess)
             {
-                return View(response.Data);
+                TempData["SuccessMessage"] = response.Message;
+                return View(response);
             }
             else
             {
-               ViewBag.Message = response.Message;
-                return View();
+               ViewBag.ErrorMessage = response.Message;
+                return View(response);
             }
         }
 
@@ -67,12 +68,13 @@ namespace CAS.Controllers
            var response = await _cropService.GetCropByIdAsync(id);
             if (response.IsSuccess)
             {
-                return View(response.Data);
+                TempData["SuccessMessage"] = response.Message;
+                return View(response);
             }
             else
             {
-                ViewBag.Message = response.Message;
-                return View("Error", response.Message);
+                ViewBag.ErrorMessage = response.Message;
+                return View(response);
             }
         }
     }

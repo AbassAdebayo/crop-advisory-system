@@ -90,7 +90,7 @@ namespace CAS.Implementation.Services
                 Description = crop.Description,
                 ImageUrl = crop.ImageUrl,
                 CropStatus = crop.CropStatus,
-                CreatedAt = crop.CreatedAt
+                CreatedAt = crop.CreatedAt.ToLocalTime()
             };
 
             return new BaseResponse<CropDto>
