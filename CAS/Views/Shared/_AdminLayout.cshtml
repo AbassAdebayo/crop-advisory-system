@@ -24,9 +24,9 @@
 
 <body>
   <!-- ======== Preloader =========== -->
-  <div id="preloader">
+  @* <div id="preloader">
     <div class="spinner"></div>
-  </div>
+  </div> *@
   <!-- ======== Preloader =========== -->
 
   <!-- ======== sidebar-nav start =========== -->
@@ -72,7 +72,7 @@
           </a>
           <ul id="ddmenu_2" class="collapse dropdown-nav">
             <li>
-              <a asp-action="ListOfCrops" asp-controller="Crop"> ListOfCrops </a>
+                            <a asp-action="ListOfCropsForAdmin" asp-controller="Crop"> ListOfCrops </a>
             </li>
             @* <li>
               <a asp-controller="Crop" asp-action="AddCrop"> Add Crop </a>
@@ -473,6 +473,7 @@
             </div>
             <!-- End Icon Cart -->
           </div>
+         </div>
           <!-- End Col -->
           <div class="col-xl-3 col-lg-4 col-sm-6">
             <div class="icon-card mb-30">

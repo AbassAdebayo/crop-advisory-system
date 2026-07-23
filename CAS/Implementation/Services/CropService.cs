@@ -4,6 +4,7 @@ using CAS.DTOs.Crop;
 using CAS.Interfaces.Repositories;
 using CAS.Interfaces.Services;
 using CAS.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CAS.Implementation.Services
 {
@@ -61,7 +62,8 @@ namespace CAS.Implementation.Services
             {
                 Id = c.Id,
                 Name = c.Name,
-                ImageUrl = c.ImageUrl
+                ImageUrl = c.ImageUrl,
+                CropStatus = c.CropStatus
 
             }).ToList();
 
@@ -98,6 +100,67 @@ namespace CAS.Implementation.Services
                 Message = "Crop retrieved successfully",
                 IsSuccess = true,
                 Data = cropData
+            };
+        }
+
+        public async Task<BaseResponse> ActivateCropStatusAsync(Guid id)
+        {
+            var crop = await _cropRepository.Get<Crop>(c => c.Id == id);
+            if (crop is null) return new BaseResponse { Message = $"Crop with Id {id} cannot be found", IsSuccess = false };
+
+            var newCropStatus = Status.Active;
+
+            crop.ActivateCropStatus(newCropStatus);
+
+            await _cropRepository.Update(crop);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            return result > 0 ? new BaseResponse { Message = "Crop activated successfully", IsSuccess = true } :
+                new BaseResponse { Message = "Error while activating crop", IsSuccess = false };
+        }
+
+        public async Task<BaseResponse> DeactivateCropStatusAsync(Guid id)
+        {
+            var crop = await _cropRepository.Get<Crop>(c => c.Id == id);
+            if (crop is null) return new BaseResponse { Message = $"Crop with Id {id} cannot be found", IsSuccess = false };
+
+            var newCropStatus = Status.Inactive;
+
+            crop.DeactivateCropStatus(newCropStatus);
+
+            await _cropRepository.Update(crop);
+
+            var result = await _unitOfWork.SaveChangesAsync();
+
+            return result > 0 ? new BaseResponse { Message = "Crop deactivated successfully", IsSuccess = true } :
+                new BaseResponse { Message = "Error while deactivating status", IsSuccess = false };
+        }
+
+        public async Task<BaseResponse<IReadOnlyList<CropListResponseModel>>> GetAllCropsForAdminAsync()
+        {
+            var crops = await _cropRepository.GetAllCropsForAdmin();
+
+            if (!crops.Any() || crops is null) return new BaseResponse<IReadOnlyList<CropListResponseModel>>
+            {
+                Message = "No crop found",
+                IsSuccess = false
+            };
+
+            var cropsData = crops.Select(c => new CropListResponseModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                ImageUrl = c.ImageUrl,
+                CropStatus = c.CropStatus
+
+            }).ToList();
+
+            return new BaseResponse<IReadOnlyList<CropListResponseModel>>
+            {
+                Message = $"{crops.Count} Crops retrieved successfully",
+                IsSuccess = true,
+                Data = cropsData
             };
         }
     }

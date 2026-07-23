@@ -1,4 +1,5 @@
-﻿using CAS.DTOs.Crop;
+﻿using CAS.Contracts.Enums;
+using CAS.DTOs.Crop;
 using CAS.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,50 @@ namespace CAS.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
+        [HttpGet("Crop/activate/{id}")]
+        public async Task<IActionResult> ActivateCrop(Guid id)
+        {
+
+            var response = await _cropService.ActivateCropStatusAsync(id);
+
+            if (!response.IsSuccess)
+            {
+                ViewBag.ErrorMessage = response.Message;
+                return View(response.Message);
+
+            }
+            else
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("ListOfCrops");
+            }
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [AutoValidateAntiforgeryToken]
+        [HttpGet("crop/deactivate/{id}")]
+        public async Task<IActionResult> DeactivateCrop(Guid id)
+        {
+
+            var response = await _cropService.DeactivateCropStatusAsync(id);
+
+            if (!response.IsSuccess)
+            {
+                ViewBag.ErrorMessage = response.Message;
+                return View(response.Message);
+
+            }
+            else
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return RedirectToAction("ListOfCrops");
+            }
+
+        }
+
         [HttpGet]
         public async Task<IActionResult> ListOfCrops()
         {
@@ -58,6 +103,22 @@ namespace CAS.Controllers
             else
             {
                ViewBag.ErrorMessage = response.Message;
+                return View(response);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListOfCropsForAdmin()
+        {
+            var response = await _cropService.GetAllCropsForAdminAsync();
+            if (response.IsSuccess)
+            {
+                TempData["SuccessMessage"] = response.Message;
+                return View(response);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = response.Message;
                 return View(response);
             }
         }

@@ -17,6 +17,7 @@ namespace CAS.DTOs.Crop
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public required string ImageUrl { get; set; }
+        public required Status CropStatus { get; set; }
 
     }
 }
