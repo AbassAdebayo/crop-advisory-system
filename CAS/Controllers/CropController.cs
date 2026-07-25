@@ -13,7 +13,6 @@ namespace CAS.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        [AutoValidateAntiforgeryToken]
         [HttpGet]
         public async Task<IActionResult> AddCrop()
         {
@@ -21,7 +20,6 @@ namespace CAS.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [AutoValidateAntiforgeryToken]
         [HttpPost]
         public async Task<IActionResult> AddCrop(CreateCropRequestModel request)
         {
@@ -48,7 +46,6 @@ namespace CAS.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [AutoValidateAntiforgeryToken]
         [HttpGet("Crop/activate/{id}")]
         public async Task<IActionResult> ActivateCrop(Guid id)
         {
@@ -70,7 +67,6 @@ namespace CAS.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [AutoValidateAntiforgeryToken]
         [HttpGet("crop/deactivate/{id}")]
         public async Task<IActionResult> DeactivateCrop(Guid id)
         {
@@ -107,6 +103,7 @@ namespace CAS.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> ListOfCropsForAdmin()
         {

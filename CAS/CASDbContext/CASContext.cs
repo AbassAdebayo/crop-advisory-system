@@ -16,6 +16,7 @@ namespace CAS.CASDbContext
         {
             SeedAdminData(modelBuilder);
             SeedRoleData(modelBuilder);
+            SeedCropTypess(modelBuilder);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -93,6 +94,64 @@ namespace CAS.CASDbContext
             };
 
             modelBuilder.Entity<Role>().HasData(role);
+        }
+
+        private void SeedCropTypess(ModelBuilder modelBuilder)
+        {
+            var soilTypes = new List<SoilType>
+            {
+                new SoilType
+                {
+                    Id = new Guid("82907dc8-96db-429e-9550-a7fcd4f4ce6a"),
+                    Name = "Sandy Soil",
+                    Description = "Composed of large particles, making it gritty to the touch. It drains very quickly and warms up fast in the spring, but holds few nutrients.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new SoilType
+                {
+                    Id = new Guid("e8927783-5f40-443b-8db5-d12f42d9b399"),
+                    Name = "Silty Soil",
+                    Description = "Made of medium-sized particles, feeling smooth like powder. It is highly fertile, retains moisture, and is often found near water bodies.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new SoilType
+                {
+                    Id = new Guid("32b43d41-7a17-4fea-86e1-e105e89db4be"),
+                    Name = "Loamy Soil",
+                    Description = "The ideal agricultural soil, consisting of a balanced mixture of sand, silt, and clay. It is nutrient-rich, retains moisture effectively, and drains well.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new SoilType
+                {
+                    Id = new Guid("52f17eba-5f74-489f-89e0-e3c886146852"),
+                    Name = "Clay Soil",
+                    Description = "Made of the smallest particles, making it sticky when wet and rock-hard when dry. It retains nutrients and moisture well but drains slowly.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new SoilType
+                {
+                    Id = new Guid("297dac6b-ef82-429f-88bc-ef79f32c428d"),
+                    Name = "Peaty Soil",
+                    Description = "Contains a high amount of dead organic matter (humus) and is dark, spongy, and acidic. It acts like a sponge and holds a lot of water.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new SoilType
+                {
+                    Id = new Guid("fcc6c2a8-a714-4eee-800f-ede74c35f876"),
+                    Name = "Chalky Soil",
+                    Description = "Highly alkaline and contains visible stones or pieces of chalk. It is usually stony, free-draining, and requires organic matter to improve its fertility.",
+                    SoilTypeStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 06, 24, 0, 0, 0, DateTimeKind.Utc)
+                }
+
+            };
+
+            modelBuilder.Entity<SoilType>().HasData(soilTypes);
         }
 
 

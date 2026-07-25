@@ -105,7 +105,9 @@ namespace CAS.Implementation.Services
 
         public async Task<BaseResponse> ActivateCropStatusAsync(Guid id)
         {
-            var crop = await _cropRepository.Get<Crop>(c => c.Id == id);
+            var crop = await _cropRepository.QueryWhere<Crop>(c => c.Id == id)
+                .IgnoreQueryFilters().SingleOrDefaultAsync();
+
             if (crop is null) return new BaseResponse { Message = $"Crop with Id {id} cannot be found", IsSuccess = false };
 
             var newCropStatus = Status.Active;
@@ -122,7 +124,8 @@ namespace CAS.Implementation.Services
 
         public async Task<BaseResponse> DeactivateCropStatusAsync(Guid id)
         {
-            var crop = await _cropRepository.Get<Crop>(c => c.Id == id);
+            var crop = await _cropRepository.QueryWhere<Crop>(c => c.Id == id)
+                .IgnoreQueryFilters().SingleOrDefaultAsync();
             if (crop is null) return new BaseResponse { Message = $"Crop with Id {id} cannot be found", IsSuccess = false };
 
             var newCropStatus = Status.Inactive;

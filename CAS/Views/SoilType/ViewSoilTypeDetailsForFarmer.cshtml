@@ -1,0 +1,64 @@
+﻿@using CAS.DTOs
+@model BaseResponse<CAS.DTOs.SoilType.SoilTypeDto>
+
+@{
+    Layout = "_FarmerLayout";
+}
+
+<div class="row">
+    @if (ViewBag.ErrorMessage != null)
+    {
+
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+            
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+            @* <button type="button" class="btn-close" data-bs-dismiss="alert"></button> *@
+        </div>
+
+    }
+
+  
+    <!-- Details -->
+    <div class="col-lg-7">
+        <div class="card-style">
+
+            <table class="table table-borderless">
+
+                <tr>
+                    <th width="180">Crop Name</th>
+                    <td>@Model.Data?.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Data?.Description</td>
+                </tr>
+
+                <tr>
+                    <th>Created At</th>
+                    <td>@Model.Data?.CreatedAt.ToString("dd MMM yyyy, hh:mm tt")</td>
+                </tr>
+
+            </table>
+
+            <div class="mt-4">
+
+                <a asp-action="ListOfSoilTypesForFarmer" class="main-btn light-btn btn-hover">
+                    Back
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

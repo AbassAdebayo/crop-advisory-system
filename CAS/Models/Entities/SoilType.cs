@@ -7,7 +7,18 @@ namespace CAS.Models.Entities
     {
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public required Status SoilTypeStatus { get; set; }
+        public required Status SoilTypeStatus { get; set; } = Status.Active;
         public ICollection<Advisory> Advisories { get; set; } = new List<Advisory>();
+
+
+        public void ActivateSoilTypeStatus(Status newSoilTypeStatus)
+        {
+            SoilTypeStatus = newSoilTypeStatus;
+        }
+
+        public void DeactivateCropStatus(Status newSoilTypeStatus)
+        {
+            SoilTypeStatus = newSoilTypeStatus;
+        }
     }
 }
