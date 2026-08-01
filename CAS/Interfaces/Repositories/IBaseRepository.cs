@@ -12,5 +12,6 @@ namespace CAS.Interfaces.Repositories
         Task<IReadOnlyList<T>> GetAll<T>() where T : BaseEntity;
         IQueryable<T> QueryWhere<T>(Expression<Func<T, bool>> expression) where T : BaseEntity;
         Task<bool> Any<T>(Expression<Func<T, bool>> expression) where T : BaseEntity;
+        Task<ICollection<T>> GetByIds<T>(ICollection<Guid> ids) where T : BaseEntity;
     }
 }

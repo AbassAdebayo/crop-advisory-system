@@ -15,8 +15,9 @@ namespace CAS.CASDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             SeedAdminData(modelBuilder);
-            SeedRoleData(modelBuilder);
-            SeedCropTypess(modelBuilder);
+            SeedFarmerRoleData(modelBuilder);
+            SeedSoilTypesData(modelBuilder);
+            SeedSeasonsData(modelBuilder);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
@@ -82,7 +83,7 @@ namespace CAS.CASDbContext
             modelBuilder.Entity<User>().HasData(adminUser);
         }
 
-        private void SeedRoleData(ModelBuilder modelBuilder)
+        private void SeedFarmerRoleData(ModelBuilder modelBuilder)
         {
             var role = new Role
             {
@@ -96,7 +97,7 @@ namespace CAS.CASDbContext
             modelBuilder.Entity<Role>().HasData(role);
         }
 
-        private void SeedCropTypess(ModelBuilder modelBuilder)
+        private void SeedSoilTypesData(ModelBuilder modelBuilder)
         {
             var soilTypes = new List<SoilType>
             {
@@ -152,6 +153,29 @@ namespace CAS.CASDbContext
             };
 
             modelBuilder.Entity<SoilType>().HasData(soilTypes);
+        }
+
+        private void SeedSeasonsData(ModelBuilder modelBuilder)
+        {
+            var seasons = new List<Season>
+            {
+                new Season
+                {
+                    Id = new Guid("813b1b0b-045e-4f12-89fb-e602dfa4e84d"),
+                    Name = "Rainy",
+                    SeasonStatus = Status.Active,
+                    CreatedAt = new DateTime(2026, 08, 01, 0, 0, 0, DateTimeKind.Utc)
+                },
+                new Season
+                {
+                    Id = new Guid("36bf3939-a5d0-4e37-8347-dabb8c33404c"),
+                    Name = "Dry",
+                    SeasonStatus= Status.Active,
+                    CreatedAt = new DateTime(2026, 08, 01, 0, 0, 0, DateTimeKind.Utc)
+                }
+            };
+
+            modelBuilder.Entity<Season>().HasData(seasons);
         }
 
 

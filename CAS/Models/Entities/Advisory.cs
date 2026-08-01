@@ -6,16 +6,18 @@ namespace CAS.Models.Entities
     public class Advisory : BaseEntity
     {
         public Guid CropId { get; set; }
+        public Crop Crop { get; set; } = default!;
         public Guid SoilTypeId { get; set; }
+        public SoilType SoilType { get; set; } = default!;
         public Guid SeasonId { get; set; }
-        public required string Location { get; set; }
+        public Season Season { get; set; } = default!;
+        public string? Location { get; set; }
         public required string Title { get; set; }
-        public required string PlantingTips { get; set; }
-        public required string WateringAdvice { get; set; }
-        public required string FertilizerAdvice { get; set; }
-        public required string PestControlAdvice { get; set; }
-        public required string HarvestingTips { get; set; }
-        public required Status Advisorytatus { get; set; }
+        public string WateringAdvice { get; set; } = string.Empty;
+        public string FertilizerAdvice { get; set; } = string.Empty;
+        public string PestControlAdvice { get; set; } = string.Empty;
+        public string HarvestingTips { get; set; } = string.Empty;
+        public Status Advisorytatus { get; set; } = Status.Active;
 
 
     }

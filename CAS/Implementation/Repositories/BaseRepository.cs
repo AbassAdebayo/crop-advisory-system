@@ -40,6 +40,13 @@ namespace CAS.Implementation.Repositories
                .ToListAsync();
         }
 
+        public async Task<ICollection<T>> GetByIds<T>(ICollection<Guid> ids) where T : BaseEntity
+        {
+            return await _context.Set<T>()
+                .Where(e => ids.Contains(e.Id))
+                .ToListAsync();
+        }
+
         public IQueryable<T> QueryWhere<T>(Expression<Func<T, bool>> expression) where T : BaseEntity
         {
             return _context.Set<T>()

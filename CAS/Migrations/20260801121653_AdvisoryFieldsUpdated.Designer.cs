@@ -3,6 +3,7 @@ using System;
 using CAS.CASDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CAS.Migrations
 {
     [DbContext(typeof(CASContext))]
-    partial class CASContextModelSnapshot : ModelSnapshot
+    [Migration("20260801121653_AdvisoryFieldsUpdated")]
+    partial class AdvisoryFieldsUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +50,7 @@ namespace CAS.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Location")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PestControlAdvice")
@@ -210,24 +214,6 @@ namespace CAS.Migrations
                         .IsUnique();
 
                     b.ToTable("Seasons");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("813b1b0b-045e-4f12-89fb-e602dfa4e84d"),
-                            CreatedAt = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Rainy Season",
-                            SeasonStatus = "Active",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("36bf3939-a5d0-4e37-8347-dabb8c33404c"),
-                            CreatedAt = new DateTime(2026, 8, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Name = "Dry Season",
-                            SeasonStatus = "Active",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("CAS.Models.Entities.SoilType", b =>
