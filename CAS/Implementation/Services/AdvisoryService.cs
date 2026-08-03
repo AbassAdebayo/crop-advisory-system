@@ -71,7 +71,22 @@ namespace CAS.Implementation.Services
                 };
             }
 
-           
+            var requests = request.Select(r => new { r.CropId, r.SoilTypeId, r.SeasonId, r.Title }).ToList();
+
+            var duplicateRequests = requests.GroupBy(r => new { r.CropId, r.SoilTypeId, r.SeasonId, r.Title })
+                                            .Where(g => g.Count() > 1)
+                                            .Select(g => g.Key)
+                                            .ToList();
+
+            if (duplicateRequests.Any())
+            {
+                return new BaseResponse
+                {
+                    IsSuccess = false,
+                    Message = "Duplicate advisories found in the request for the same crop, soil type, and season."
+                };
+            }
+
 
             foreach ( var item in request)
             {
