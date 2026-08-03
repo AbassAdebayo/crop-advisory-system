@@ -1,6 +1,8 @@
 ﻿using CAS.DTOs.Advisory;
 using CAS.Implementation.Services;
 using CAS.Interfaces.Services;
+using CAS.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CAS.Controllers
@@ -24,18 +26,26 @@ namespace CAS.Controllers
             return View();
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> AddAdvisories()
         {
-            ViewBag.Crops = await _cropService.GetAllCropsAsync();
-            ViewBag.Seasons = await _seasonService.GetAllActiveSeasonsAsync();
-            ViewBag.SoilTypes = await _soilTypeService.GetAllSoilTypesForFarmerAsync();
+            var crops = await _cropService.GetAllCropsAsync();
+            ViewBag.Crops = crops.Data;
+
+            var seasons = await _seasonService.GetAllActiveSeasonsAsync();
+            ViewBag.Seasons = seasons.Data;
+
+
+            var soilTypes = await _soilTypeService.GetAllSoilTypesForFarmerAsync();
+            ViewBag.SoilTypes = soilTypes.Data;
 
             return View(new CreateBulkAdvisoriesRequest());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateBulkAdvisoriesRequest request)
+        public async Task<IActionResult> AddAdvisories(CreateBulkAdvisoriesRequest request)
         {
             if (!ModelState.IsValid)
             {

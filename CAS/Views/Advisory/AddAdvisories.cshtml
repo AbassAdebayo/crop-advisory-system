@@ -1,0 +1,245 @@
+﻿@model CAS.DTOs.Advisory.CreateBulkAdvisoriesRequest
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "AddAdvisories"; 
+}
+
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Create Advisories</h3>
+            <p class="text-muted mb-0">
+                Create multiple advisories for different crop, soil type and season combinations.
+            </p>
+        </div>
+
+        <a asp-action="List" class="btn btn-outline-secondary">
+            <i class="lni lni-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
+
+    <form asp-action="AddAdvisories" method="post">
+
+        <div id="advisoryContainer">
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4 advisory-item">
+
+                <div class="card-header bg-white border-0 py-3 px-4">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="fw-bold mb-0">
+                            Advisory #1
+                        </h5>
+
+                        <button type="button"
+                                class="btn btn-outline-danger btn-sm removeRow d-none">
+
+                            <i class="lni lni-trash-can"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row g-4">
+
+                        <div class="col-lg-3">
+
+                            <label class="form-label fw-semibold">
+                                Crop
+                            </label>
+
+                            <select name="Advisories[0].CropId"
+                                    class="form-select">
+
+                                <option value="">Select Crop</option>
+
+                                @foreach (var crop in ViewBag.Crops)
+                                {
+                                    <option value="@crop.Id">@crop.Name</option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-lg-3">
+
+                            <label class="form-label fw-semibold">
+                                Soil Type
+                            </label>
+
+                            <select name="Advisories[0].SoilTypeId"
+                                    class="form-select">
+
+                                <option value="">Select Soil Type</option>
+
+                                @foreach (var soil in ViewBag.SoilTypes)
+                                {
+                                    <option value="@soil.Id">@soil.Name</option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-lg-3">
+
+                            <label class="form-label fw-semibold">
+                                Season
+                            </label>
+
+                            <select name="Advisories[0].SeasonId"
+                                    class="form-select">
+
+                                <option value="">Select Season</option>
+
+                                @foreach (var season in ViewBag.Seasons)
+                                {
+                                    <option value="@season.Id">@season.Name</option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-lg-3">
+
+                            <label class="form-label fw-semibold">
+                                Location
+                            </label>
+
+                            <input type="text"
+                                   name="Advisories[0].Location"
+                                   class="form-control"
+                                   placeholder="e.g. Kaduna, Nigeria" />
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label fw-semibold">
+                                Advisory Title
+                            </label>
+
+                            <input type="text"
+                                   name="Advisories[0].Title"
+                                   class="form-control"
+                                   placeholder="Example: Best Planting Practices for Maize During Rainy Season" />
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center">
+
+            <button type="button"
+                    class="btn btn-success"
+                    id="addMore">
+
+                <i class="lni lni-plus"></i>
+
+                Add Another Advisory
+
+            </button>
+
+            <button type="submit"
+                    class="btn btn-primary px-4">
+
+                <i class="lni lni-checkmark"></i>
+
+                Save All Advisories
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+    let count = 1;
+
+    document.getElementById("addMore").addEventListener("click", function () {
+
+        if (count >= 50) {
+            alert("Maximum of 50 advisories can be added.");
+            return;
+        }
+
+        const first = document.querySelector(".advisory-item");
+
+        const clone = first.cloneNode(true);
+
+        clone.querySelector("h5").innerText = "Advisory #" + (count + 1);
+
+        clone.querySelectorAll("input, textarea, select").forEach(function (item) {
+
+            if (item.tagName === "SELECT") {
+                item.selectedIndex = 0;
+            }
+            else {
+                item.value = "";
+            }
+
+            item.name = item.name.replace(/\[\d+\]/, "[" + count + "]");
+
+        });
+
+        clone.querySelector(".removeRow").classList.remove("d-none");
+
+        clone.querySelector(".removeRow").addEventListener("click", function () {
+
+            clone.remove();
+
+            updateIndexes();
+
+        });
+
+        document.getElementById("advisoryContainer").appendChild(clone);
+
+        count++;
+
+    });
+
+    function updateIndexes() {
+
+        const cards = document.querySelectorAll(".advisory-item");
+
+        count = cards.length;
+
+        cards.forEach(function (card, index) {
+
+            card.querySelector("h5").innerText = "Advisory #" + (index + 1);
+
+            card.querySelectorAll("input, textarea, select").forEach(function (control) {
+
+                control.name = control.name.replace(/\[\d+\]/, "[" + index + "]");
+
+            });
+
+            if (index === 0)
+                card.querySelector(".removeRow").classList.add("d-none");
+            else
+                card.querySelector(".removeRow").classList.remove("d-none");
+
+        });
+
+    }
+
+</script>

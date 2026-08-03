@@ -35,7 +35,7 @@ namespace CAS.Implementation.Services
             int maxAdvisories = 50;
             int successfulAdvisories = 0;
 
-            var seasonIds = request.Select(r => r.SeasonId).ToList();
+            var seasonIds = request.Select(r => r.SeasonId).Distinct().ToList();
             var seasons = await _seasonRepository.GetByIds<Season>(seasonIds);
 
             if(seasonIds.Count != seasons.Count)
@@ -47,7 +47,7 @@ namespace CAS.Implementation.Services
                 };
             }
 
-            var cropIds = request.Select(r => r.CropId).ToList();
+            var cropIds = request.Select(r => r.CropId).Distinct().ToList();
             var crops = await _cropRepository.GetByIds<Crop>(cropIds);
 
             if(cropIds.Count != crops.Count)
@@ -59,7 +59,7 @@ namespace CAS.Implementation.Services
                 };
             }
 
-            var soilTypeIds = request.Select(r => r.SoilTypeId).ToList();
+            var soilTypeIds = request.Select(r => r.SoilTypeId).Distinct().ToList();
             var soilTypes = await _soilTypeRepository.GetByIds<SoilType>(soilTypeIds);
 
             if(soilTypeIds.Count != soilTypes.Count)
@@ -71,9 +71,9 @@ namespace CAS.Implementation.Services
                 };
             }
 
-            var requests = request.Select(r => new { r.CropId, r.SoilTypeId, r.SeasonId, r.Title }).ToList();
+            var requests = request.Select(r => new { r.CropId, r.SoilTypeId, r.SeasonId }).ToList();
 
-            var duplicateRequests = requests.GroupBy(r => new { r.CropId, r.SoilTypeId, r.SeasonId, r.Title })
+            var duplicateRequests = requests.GroupBy(r => new { r.CropId, r.SoilTypeId, r.SeasonId })
                                             .Where(g => g.Count() > 1)
                                             .Select(g => g.Key)
                                             .ToList();
@@ -100,8 +100,7 @@ namespace CAS.Implementation.Services
                }
 
               var advisoryExists = await _advisoryRepository.Any<Advisory>
-              (a => a.Title == item.Title
-              && a.CropId == item.CropId
+              (a => a.CropId == item.CropId
               && a.SoilTypeId == item.SoilTypeId
               && a.SeasonId == item.SeasonId);
 
