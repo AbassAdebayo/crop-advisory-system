@@ -104,7 +104,7 @@ namespace CAS.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, authenticationProperties);
             if (role == "Farmer")
             {
-                return RedirectToAction("FarmerDashboard", "User");
+                return RedirectToAction("Index", "Advisory");
             }
 
             return RedirectToAction("AdminDashboard", "User");

@@ -157,5 +157,93 @@ namespace CAS.Implementation.Services
             };
 
         }
+
+
+        public async Task<BaseResponse<PagedResponse<AdvisoryCardResponseModel>>> SearchAsync(SearchAdvisoryRequestModel request)
+        {
+            var result = await _advisoryRepository.SearchAsync(
+           request.Keyword,
+           request.CropId,
+           request.SeasonId,
+           request.SoilTypeId,
+           request.Page,
+           request.PageSize);
+
+            var response = new PagedResponse<AdvisoryCardResponseModel>
+            {
+                CurrentPage = result.CurrentPage,
+                PageSize = result.PageSize,
+                TotalPages = result.TotalPages,
+                TotalRecords = result.TotalRecords,
+
+                Data = result.Items.Select(x => new AdvisoryCardResponseModel
+                {
+                    Id = x.Id,
+
+                    Crop = x.Crop.Name,
+
+                    Season = x.Season.Name,
+
+                    SoilType = x.SoilType.Name,
+
+                    Location = x.Location!,
+
+                    Title = x.Title,
+                }).ToList()
+            };
+
+            return new BaseResponse<PagedResponse<AdvisoryCardResponseModel>>
+            {
+                IsSuccess = true,
+                Message = "Advisories retrieved successfully.",
+                Data = response
+            };
+
+        }
+
+        public async Task<BaseResponse<AdvisoryDetailsResponseModel>> GetDetailsAsync(Guid id)
+        {
+            var advisory = await _advisoryRepository.GetByIdAsync(id);
+
+            if (advisory == null)
+            {
+                return new BaseResponse<AdvisoryDetailsResponseModel>
+                {
+                    IsSuccess = false,
+                    Message = "Advisory not found."
+                };
+            }
+
+            return new BaseResponse<AdvisoryDetailsResponseModel>
+            {
+                IsSuccess = true,
+                Message = "Success",
+
+                Data = new AdvisoryDetailsResponseModel
+                {
+                    Id = advisory.Id,
+
+                    Crop = advisory.Crop.Name,
+
+                    Season = advisory.Season.Name,
+
+                    SoilType = advisory.SoilType.Name,
+
+                    Location = advisory.Location!,
+
+                    Title = advisory.Title,
+
+                    WateringAdvice = advisory.WateringAdvice,
+
+                    FertilizerAdvice = advisory.FertilizerAdvice,
+
+                    PestControlAdvice = advisory.PestControlAdvice,
+
+                    HarvestingTips = advisory.HarvestingTips,
+
+                    CreatedAt = advisory.CreatedAt
+                }
+            };
+        }
     }
 }

@@ -6,5 +6,7 @@ namespace CAS.Interfaces.Services
     public interface IAdvisoryService
     {
         Task<BaseResponse> CreateAdvisoryAsync(List<CreateAdvisoryRequestModel> request);
+        Task<BaseResponse<PagedResponse<AdvisoryCardResponseModel>>> SearchAsync(SearchAdvisoryRequestModel request);
+        Task<BaseResponse<AdvisoryDetailsResponseModel>> GetDetailsAsync(Guid id);
     }
 }

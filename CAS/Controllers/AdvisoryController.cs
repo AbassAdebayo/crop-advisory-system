@@ -21,10 +21,6 @@ namespace CAS.Controllers
             _cropService = cropService;
             _advisoryAdvice = advisoryAdvice;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [Authorize(Roles ="Admin")]
         [HttpGet]
@@ -41,6 +37,37 @@ namespace CAS.Controllers
             ViewBag.SoilTypes = soilTypes.Data;
 
             return View(new CreateBulkAdvisoriesRequest());
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Index(SearchAdvisoryRequestModel request)
+        {
+            request.Page = request.Page <= 0 ? 1 : request.Page;
+            request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
+
+            ViewBag.Crops = (await _cropService.GetAllCropsAsync()).Data;
+            ViewBag.Seasons = (await _seasonService.GetAllActiveSeasonsAsync()).Data;
+            ViewBag.SoilTypes = (await _soilTypeService.GetAllSoilTypesForFarmerAsync()).Data;
+
+            var result = await _advisoryAdvice.SearchAsync(request);
+
+            return View(result.Data);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var result = await _advisoryAdvice.GetDetailsAsync(id);
+
+            if (!result.IsSuccess)
+            {
+                TempData["Error"] = result.Message;
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(result.Data);
         }
 
         [Authorize(Roles = "Admin")]
