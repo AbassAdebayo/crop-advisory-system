@@ -23,5 +23,6 @@
         public string HarvestingTips { get; set; } = default!;
 
         public DateTime CreatedAt { get; set; }
+        public bool IsFavourite { get; set; }
     }
 }

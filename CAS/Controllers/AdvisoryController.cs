@@ -4,6 +4,7 @@ using CAS.Interfaces.Services;
 using CAS.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CAS.Controllers
 {
@@ -40,6 +41,7 @@ namespace CAS.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Index(SearchAdvisoryRequestModel request)
         {
@@ -56,10 +58,18 @@ namespace CAS.Controllers
         }
 
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var result = await _advisoryAdvice.GetDetailsAsync(id);
+            var farmerIdClaims = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Guid farmerId = default;
+
+            while (!Guid.TryParse(farmerIdClaims, out farmerId))
+                return BadRequest("Unable to parse farmer Id");
+
+            var result = await _advisoryAdvice.GetFavouriteAdvisoryDetails(id, farmerId);
 
             if (!result.IsSuccess)
             {
@@ -98,6 +108,45 @@ namespace CAS.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> ToggleFavourite(Guid advisoryId)
+        {
+            var farmerIdClaims = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Guid farmerId = default;
+
+            while (!Guid.TryParse(farmerIdClaims, out farmerId))
+                return BadRequest("Unable to parse farmer Id");
+
+            Console.WriteLine($"Farmer ID: {farmerId}");
+           
+
+            var result = await _advisoryAdvice.ToggleFavouriteAsync(
+                farmerId,
+                advisoryId);
+
+            return RedirectToAction(nameof(Details), new { id = advisoryId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Favourites()
+        {
+
+            var farmerIdClaims = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Guid farmerId = default;
+
+            while (!Guid.TryParse(farmerIdClaims, out farmerId))
+                return BadRequest("Unable to parse farmer Id");
+
+            var result = await _advisoryAdvice.GetFavouriteAdvisoriesAsync(farmerId);
+
+            return View(result.Data);
+        }
+
 
 
     }

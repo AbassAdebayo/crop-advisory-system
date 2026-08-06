@@ -18,13 +18,46 @@
         </div>
 
         <a asp-action="Index"
-           class="btn btn-outline-success">
+           class="btn btn-outline-secondary">
 
             <i class="lni lni-arrow-left"></i>
 
-            Back to Advisories
+            Back
 
         </a>
+
+        <form asp-action="ToggleFavourite" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="advisoryId"
+                   value="@Model.Id" />
+
+            @if (Model.IsFavourite)
+            {
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <i class="lni lni-heart-filled"></i>
+
+                    Remove Favourite
+
+                </button>
+            }
+            else
+            {
+                <button type="submit"
+                        class="btn btn-warning">
+
+                    <i class="lni lni-heart"></i>
+
+                    Add to Favourite
+
+                </button>
+            }
+
+        </form>
 
     </div>
 

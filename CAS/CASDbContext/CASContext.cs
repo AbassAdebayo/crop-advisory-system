@@ -43,10 +43,15 @@ namespace CAS.CASDbContext
                 entity.Property(s => s.SeasonStatus).HasConversion<string>();
             });
 
-            modelBuilder.Entity<Advisory>()
-               .Property(a => a.Advisorytatus).
+            modelBuilder.Entity<Advisory>(entity =>
+            {
+                entity.Property(a => a.Advisorytatus).
                HasConversion<string>();
+
+                entity.HasQueryFilter(a => a.Advisorytatus == Status.Active);
+            });
                
+             
 
             modelBuilder.Entity<Role>()
                 .HasIndex(c => c.Name)

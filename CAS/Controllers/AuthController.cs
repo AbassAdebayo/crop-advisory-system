@@ -91,7 +91,7 @@ namespace CAS.Controllers
             var claims = new List<Claim>
              {
                     new Claim(ClaimTypes.Name, loginResponseData.FullName),
-                   new Claim(ClaimTypes.Email, loginResponseData.Email),
+                    new Claim(ClaimTypes.Email, loginResponseData.Email),
                     new Claim(ClaimTypes.NameIdentifier, loginResponseData.UserId.ToString()),
                     new Claim(ClaimTypes.Role, loginResponseData.Role)
 

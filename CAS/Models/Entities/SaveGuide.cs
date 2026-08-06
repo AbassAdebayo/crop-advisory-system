@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CAS.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CAS.Models.Entities
 {
-    public class SaveGuide
+    public class SaveGuide : BaseEntity
     {
-        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid AdvisoryId { get; set; }
-        public DateTime CreatedAt { get; set;}
+        public User User { get; set; } = default!;
+        public Advisory Advisory { get; set; } = default!;
 
     }
 }

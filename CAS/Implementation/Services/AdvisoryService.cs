@@ -4,6 +4,7 @@ using CAS.DTOs.Advisory;
 using CAS.Interfaces.Repositories;
 using CAS.Interfaces.Services;
 using CAS.Models.Entities;
+using System.Runtime.Intrinsics.Arm;
 
 namespace CAS.Implementation.Services
 {
@@ -14,12 +15,14 @@ namespace CAS.Implementation.Services
         private readonly ISeasonRepository _seasonRepository;
         private readonly ICropRepository _cropRepository;
         private readonly ISoilTypeRepository _soilTypeRepository;
+        private readonly ISaveGuideRepository _saveGuideRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public AdvisoryService(ILogger<AdvisoryService> logger, IAdvisoryRepository advisoryRepository, 
             ISeasonRepository seasonRepository, 
             ICropRepository cropRepository, 
             ISoilTypeRepository soilTypeRepository, 
+            ISaveGuideRepository saveGuideRepository,
             IUnitOfWork unitOfWork)
         {
             _advisoryRepository = advisoryRepository ?? throw new ArgumentNullException(nameof(advisoryRepository));
@@ -27,6 +30,7 @@ namespace CAS.Implementation.Services
             _cropRepository = cropRepository;
             _soilTypeRepository = soilTypeRepository;
             _unitOfWork = unitOfWork;
+            _saveGuideRepository = saveGuideRepository;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         public async Task<BaseResponse> CreateAdvisoryAsync(List<CreateAdvisoryRequestModel> request)
@@ -201,9 +205,45 @@ namespace CAS.Implementation.Services
 
         }
 
-        public async Task<BaseResponse<AdvisoryDetailsResponseModel>> GetDetailsAsync(Guid id)
+        public async Task<BaseResponse<IReadOnlyList<AdvisoryCardResponseModel>>> GetFavouriteAdvisoriesAsync(Guid userId)
         {
-            var advisory = await _advisoryRepository.GetByIdAsync(id);
+            var favourites = await _saveGuideRepository.GetFavourites(userId);
+            if (favourites is null || !favourites.Any())
+                return new BaseResponse<IReadOnlyList<AdvisoryCardResponseModel>>
+                {
+                    IsSuccess = false,
+                    Message = "No favourites found"
+                };
+
+                var response = favourites.Select(x => new AdvisoryCardResponseModel
+                {
+                    Id = x.Id,
+
+                    Crop = x.Advisory.Crop.Name,
+
+                    Season = x.Advisory.Season.Name,
+
+                    SoilType = x.Advisory.SoilType.Name,
+
+                    Location = x.Advisory.Location!,
+
+                    Title = x.Advisory.Title,
+                }).ToList();
+
+            return new BaseResponse<IReadOnlyList<AdvisoryCardResponseModel>>
+            {
+                Message = "Favourite advisories retrieved successfully",
+                IsSuccess = true,
+                Data = response
+            };
+            
+        }
+
+        public async Task<BaseResponse<AdvisoryDetailsResponseModel>> GetFavouriteAdvisoryDetails(Guid advisoryId, Guid userId)
+        {
+            var isFavourite = await _saveGuideRepository.Any<SaveGuide>(s => s.AdvisoryId == advisoryId && s.UserId == userId);
+
+            var advisory = await _advisoryRepository.GetByIdAsync(advisoryId);
 
             if (advisory == null)
             {
@@ -241,9 +281,42 @@ namespace CAS.Implementation.Services
 
                     HarvestingTips = advisory.HarvestingTips,
 
+                    IsFavourite = isFavourite,
+
                     CreatedAt = advisory.CreatedAt
                 }
             };
+        }
+
+        public async Task<BaseResponse> ToggleFavouriteAsync(Guid farmerId, Guid advisoryId)
+        {
+            var farmerFavourite = await _saveGuideRepository.Get<SaveGuide>(s => s.UserId == farmerId && s.AdvisoryId == advisoryId);
+
+
+            if (farmerFavourite is not null)
+            {
+                _saveGuideRepository.Delete(farmerFavourite);
+                var removeResponse = await _unitOfWork.SaveChangesAsync();
+
+                return removeResponse > 0 ? new BaseResponse { IsSuccess = true, Message = "Favourite advisory removed successfully." } :
+                    new BaseResponse { IsSuccess = false, Message = "Failed to remove favourite advisory." };
+            }
+
+            var addFavourite = new SaveGuide
+            {
+                UserId = farmerId,
+                AdvisoryId = advisoryId,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _saveGuideRepository.Add<SaveGuide>(addFavourite);
+
+           var addResponse =  await _unitOfWork.SaveChangesAsync();
+            return addResponse > 0 ? new BaseResponse { IsSuccess = true, Message = "Favourite addedd successfully" } :
+                 new BaseResponse { IsSuccess = false, Message = "Failed to add favourite advisory" };
+
+
+            
         }
     }
 }

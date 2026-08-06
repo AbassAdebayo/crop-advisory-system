@@ -34,12 +34,14 @@ builder.Services.AddScoped<ISoilTypeService, SoilTypeService>();
 builder.Services.AddScoped<ISeasonService, SeasonService>();
 builder.Services.AddScoped<IAdvisoryService, AdvisoryService>();
 
+
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>(); 
 builder.Services.AddScoped<IBaseRepository, BaseRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICropRepository, CropRepository>();
 builder.Services.AddScoped<ISeasonRepository, SeasonRepository>();
 builder.Services.AddScoped<IAdvisoryRepository, AdvisoryRepository>();
+builder.Services.AddScoped<ISaveGuideRepository, SaveGuideRepository>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IUserService, UserService>();
