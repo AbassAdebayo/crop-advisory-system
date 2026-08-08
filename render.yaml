@@ -18,6 +18,7 @@ services:
     branch: master  
     dockerfilePath: ./Dockerfile
     dockerContext: . 
+    autoDeploy: true
 
  
 
@@ -31,3 +32,17 @@ services:
 # ------------------------------------------------------------
 # Managed PostgreSQL database
 # ------------------------------------------------------------
+# Link environment variable to your Render database
+    envVars:
+      - key: ConnectionStrings__CASConnection
+        fromDatabase:
+          name: cas-db 
+          property: connectionString
+
+# Define the PostgreSQL database
+databases:
+  - name: cas-db
+    databaseName: cas_db_wmzy
+    user: cas_db_wmzy_user
+    plan: free
+    region: oregon
