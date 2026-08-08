@@ -1,0 +1,33 @@
+# ============================================================
+# Render Blueprint - Crop Advisory System (CAS)
+# https://render.com/docs/blueprint-spec
+#
+# Deploy: Connect this repo on Render and use "Apply Blueprint"
+# or push this file and let Render auto-detect it.
+# ============================================================
+
+services:
+  # ----------------------------------------------------------
+  # Web service - ASP.NET Core MVC application
+  # ----------------------------------------------------------
+  - type: web
+    name: cas-web
+    runtime: docker
+    plan: free                   
+    region: oregon   
+    branch: master  
+    dockerfilePath: ./Dockerfile
+    dockerContext: . 
+
+ 
+
+    # Environment variables (set secrets in the Render dashboard)
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+
+      - key: ASPNETCORE_URLS
+        value: http://+:8080
+# ------------------------------------------------------------
+# Managed PostgreSQL database
+# ------------------------------------------------------------
