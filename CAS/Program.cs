@@ -13,6 +13,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,7 @@ builder.Services.AddControllersWithViews();
 // Add Database
 builder.Services.AddDbContext<CASContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("CASConnection")
-    ));
+    ).ConfigureWarnings(w => w.Ignore(CoreEventId.PossibleIncorrectRequiredNavigationWithQueryFilterInteractionWarning)));
 
 builder.Services.Configure<CloudinarySettings>(
 builder.Configuration.GetSection("Cloudinary"));
