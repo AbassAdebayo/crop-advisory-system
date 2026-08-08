@@ -18,7 +18,6 @@ services:
     branch: master  
     dockerfilePath: ./Dockerfile
     dockerContext: . 
-    autoDeploy: true
 
  
 
